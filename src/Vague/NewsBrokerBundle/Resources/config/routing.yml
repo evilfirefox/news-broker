@@ -1,0 +1,3 @@
+vague_news_broker_homepage:
+    path:     /
+    defaults: { _controller: VagueNewsBrokerBundle:Default:index }

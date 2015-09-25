@@ -1,0 +1,3 @@
+vague_news_broker:
+    resource: "@VagueNewsBrokerBundle/Resources/config/routing.yml"
+    prefix:   /

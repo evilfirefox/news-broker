@@ -1,0 +1,4 @@
+services:
+#    vague_news_broker.example:
+#        class: Vague\NewsBrokerBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
