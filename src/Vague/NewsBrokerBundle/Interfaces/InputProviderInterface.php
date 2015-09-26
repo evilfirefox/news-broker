@@ -6,14 +6,15 @@
  * Time: 12:19 AM
  */
 
-namespace Vauge\NewsBrokerBundle\Interfaces;
+namespace Vague\NewsBrokerBundle\Interfaces;
 
 
 interface InputProviderInterface
 {
 
     /**
+     * @param string $source
      * @return string
      */
-    public function getContent();
+    public function getContent($source);
 }
