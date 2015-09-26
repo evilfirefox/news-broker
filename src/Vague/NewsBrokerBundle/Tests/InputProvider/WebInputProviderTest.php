@@ -9,14 +9,11 @@
 namespace Vague\NewsBrokerBundle\Tests\InputProvider;
 
 use Vague\NewsBrokerBundle\InputProvider\WebInputProvider;
+use Vague\NewsBrokerBundle\Tests\BaseTestCase;
 
-class WebInputProviderTest extends \PHPUnit_Framework_TestCase
+class WebInputProviderTest extends BaseTestCase
 {
-    const MASK_FIXTURES_PATH = '%s/%s/%s';
-    const PATH_FIXTURES_RELATIVE = '../fixtures';
     const PATH_FILE = 'danfoss.html';
-    const INDEX_CONTENT = 'content';
-    const INDEX_URL = 'uri';
 
     /**
      * @param array $testData

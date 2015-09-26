@@ -6,7 +6,7 @@
  * Time: 12:20 AM
  */
 
-namespace Vauge\NewsBrokerBundle\Interfaces;
+namespace Vague\NewsBrokerBundle\Interfaces;
 
 
 interface ParserInterface
@@ -14,7 +14,7 @@ interface ParserInterface
 
     /**
      * @param string $source
-     * @return mixed
+     * @return array
      */
     public function parse($source);
 }
