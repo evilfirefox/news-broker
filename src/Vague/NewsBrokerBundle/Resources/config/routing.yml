@@ -1,3 +1,7 @@
 vague_news_broker_homepage:
     path:     /
     defaults: { _controller: VagueNewsBrokerBundle:Default:index }
+
+vague_news_broker_rss:
+    path:   /rss/{key}
+    defaults: { _controller: VagueNewsBrokerBundle:Default:rss }

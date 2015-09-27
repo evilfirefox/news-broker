@@ -58,7 +58,7 @@ class RssItem implements DataContainerInterface
     /**
      * @return string
      */
-    public function getDescriptino()
+    public function getDescription()
     {
         return $this->_description;
     }

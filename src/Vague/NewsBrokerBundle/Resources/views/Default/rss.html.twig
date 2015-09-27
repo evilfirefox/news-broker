@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+    <channel>
+        <title></title>
+        <link></link>
+        <description></description>
+        <language></language>
+        <pubDate></pubDate>
+        <lastBuildDate></lastBuildDate>
+        <docs></docs>
+        <generator></generator>
+        <managingEditor></managingEditor>
+        <webMaster></webMaster>
+        {% for item in data %}
+        <item>
+            <title>{{ item.title }}</title>
+            <link>{{ item.url }}</link>
+            <description>{{ item.description }}</description>
+            <pubDate>{{ item.eventDate|date('D, d M Y H:i:s O') }}</pubDate>
+            <guid>{{ item.url }}</guid>
+        </item>
+        {% endfor %}
+    </channel>
+</rss>

@@ -25,7 +25,7 @@ interface DataContainerInterface
     /**
      * @return string
      */
-    public function getDescriptino();
+    public function getDescription();
 
     /**
      * @return string
