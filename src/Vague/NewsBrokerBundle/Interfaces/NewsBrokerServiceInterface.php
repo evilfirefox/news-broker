@@ -6,14 +6,28 @@
  * Time: 12:23 AM
  */
 
-namespace Vauge\NewsBrokerBundle\Interfaces;
+namespace Vague\NewsBrokerBundle\Interfaces;
 
 
 interface NewsBrokerServiceInterface
 {
 
     /**
-     * @return mixed
+     * @param string $key
+     * @param string $sourceId
+     * @param InputProviderInterface $provider
      */
-    public function process();
+    public function registerInputProvider($key, $sourceId, InputProviderInterface $provider);
+
+    /**
+     * @param string $key
+     * @param ParserInterface $parser
+     */
+    public function registerParser($key, ParserInterface $parser);
+
+    /**
+     * @param string $key
+     * @return array
+     */
+    public function process($key);
 }

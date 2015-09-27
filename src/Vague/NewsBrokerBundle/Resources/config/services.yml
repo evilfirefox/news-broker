@@ -1,4 +1,24 @@
+parameters:
+  nwb.service.broker.class: Vague\NewsBrokerBundle\Service\NewsBrokerService
+  nwb.input_provider.web.class: Vague\NewsBrokerBundle\InputProvider\WebInputProvider
+  nwb.parser.danfoss.class: Vague\NewsBrokerBundle\Parser\DanfossParser
+  nwb.calls.register.input_provider: registerInputProvider
+  nwb.calls.register.parser: registerParser
+  nwb.url.danfoss: http://www.danfoss.com/news/
+  nwb.keys.danfoss: danfoss
+
 services:
-#    vague_news_broker.example:
-#        class: Vague\NewsBrokerBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+  nwb.input_provider.web:
+    class: %nwb.input_provider.web.class%
+    arguments: []
+
+  nwb.parser.danfoss:
+    class: %nwb.parser.danfoss.class%
+    arguments: []
+
+  nwb.service.broker:
+    class: %nwb.service.broker.class%
+    arguments: []
+    calls:
+      - [%nwb.calls.register.input_provider%, [%nwb.keys.danfoss%, %nwb.url.danfoss%, @nwb.input_provider.web]]
+      - [%nwb.calls.register.parser%, [%nwb.keys.danfoss%, @nwb.parser.danfoss]]

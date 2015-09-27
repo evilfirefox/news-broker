@@ -14,7 +14,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
     const MASK_FIXTURES_PATH = '%s/%s/%s';
     const PATH_FIXTURES_RELATIVE = '../fixtures';
     const INDEX_CONTENT = 'content';
-    const INDEX_URL = 'uri';
+    const INDEX_URL = 'url';
     const INDEX_RESULT = 'result';
 
     /**
