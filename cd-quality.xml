@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="refuel2">
+    <property environment="go"/>
+    <property name="deploy.user" value="${go.QUA_WEBUSER}"/>
+    <property name="deploy.server" value="${go.QUA_SERVER}"/>
+    <property name="deploy.label" value="${go.GO_PIPELINE_LABEL}"/>
+    <property name="deploy.keyfile" value="${user.home}/.ssh/id_rsa"/>
+    <target name="deploy-to-quality">
+        <sshexec host="${deploy.server}" username="${deploy.user}" keyfile="${deploy.keyfile}"
+                 command="rm -rf ~/webapp/*" trust="true"/>
+        <scp file="${basedir}/refuel2-dev-build/artifact.caf" keyfile="${deploy.keyfile}"
+             todir="${deploy.user}@${deploy.server}:~/" trust="true"/>
+        <sshexec host="${deploy.server}" username="${deploy.user}" keyfile="${deploy.keyfile}"
+                 command="unzip -q ~/artifact.caf -d ~/webapp/" trust="true"/>
+        <sshexec host="${deploy.server}" username="${deploy.user}" keyfile="${deploy.keyfile}" command="rm -rf ~/*.caf"
+                 trust="true"/>
+    </target>
+    <target name="phpmd"></target>
+    <target name="phpcpd"></target>
+    <target name="phpcs"></target>
+    <target name="run-sonar"></target>
+</project>

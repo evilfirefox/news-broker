@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="refuel2">
+    <property environment="go"/>
+    <property name="deploy.user" value="${go.DEV_WEBUSER}"/>
+    <property name="deploy.server" value="${go.DEV_SERVER}"/>
+    <property name="deploy.label" value="${go.GO_PIPELINE_LABEL}"/>
+    <property name="deploy.target_folder" value="~/webapp/${deploy.label}"/>
+    <property name="deploy.keyfile" value="${user.home}/.ssh/id_rsa"/>
+    <target name="composer-install">
+        <exec executable="composer">
+            <arg value="install"/>
+        </exec>
+    </target>
+    <target name="unit-tests">
+        <copy file="${basedir}/app/phpunit.xml.dist" tofile="${basedir}/app/phpunit.xml"/>
+        <exec executable="phpunit"
+              failonerror="true">
+            <arg value="-c"/>
+            <arg value="app/"/>
+        </exec>
+    </target>
+    <target name="finalize-folder-structure">
+        <delete dir="./app/cache/*"/>
+        <delete file="./app/cache/test/*.log"/>
+    </target>
+    <target name="compress-artifact">
+        <zip destfile="artifact.caf" basedir="." includes="**/*"/>
+    </target>
+    <target name="deploy-to-dev">
+        <sshexec host="${deploy.server}" username="${deploy.user}" keyfile="${deploy.keyfile}" command="mkdir --parents ${deploy.target_folder}" trust="true"/>
+        <scp file="${basedir}/refuel2-dev-build/artifact.caf" keyfile="${deploy.keyfile}" todir="${deploy.user}@${deploy.server}:${deploy.target_folder}" trust="true"/>
+        <sshexec host="${deploy.server}" username="${deploy.user}" keyfile="${deploy.keyfile}" command="unzip -q ${deploy.target_folder}/artifact.caf -d ${deploy.target_folder}" trust="true"/>
+        <sshexec host="${deploy.server}" username="${deploy.user}" keyfile="${deploy.keyfile}"
+                 command="rm -f ${deploy.target_folder}/artifact.caf" trust="true"/>
+    </target>
+    <target name="setup-permissions">
+        <sshexec host="${deploy.server}" username="${deploy.user}" keyfile="${deploy.keyfile}" command="sudo chown -R www-data:www-data ${deploy.target_folder}/app/cache" trust="true"/>
+        <sshexec host="${deploy.server}" username="${deploy.user}" keyfile="${deploy.keyfile}" command="sudo chown -R www-data:www-data ${deploy.target_folder}/app/logs" trust="true"/>
+    </target>
+    <target name="migrate-database">
+        <sshexec host="${deploy.server}" username="${deploy.user}" keyfile="${deploy.keyfile}" command="php ${deploy.target_folder}/app/console doctrine:migrations:migrate" trust="true"/>
+    </target>
+    <target name="switch-symlinks">
+        <sshexec host="${deploy.server}" username="${deploy.user}" keyfile="${deploy.keyfile}"
+                 command="rm -f ~/webapp.latest" trust="true"/>
+        <sshexec host="${deploy.server}" username="${deploy.user}" keyfile="${deploy.keyfile}"
+                 command="ln -sf ${deploy.target_folder} webapp.latest" trust="true"/>
+    </target>
+    <target name="replace-htaccess">
+        <sshexec host="${deploy.server}" username="${deploy.user}" keyfile="${deploy.keyfile}"
+                 command="cat ${deploy.target_folder}/web/.htaccess-dev > ${deploy.target_folder}/web/.htaccess" trust="true"/>
+    </target>
+</project>
