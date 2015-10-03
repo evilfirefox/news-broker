@@ -15,4 +15,4 @@ _errors:
     prefix:   /_error
 
 _main:
-    resource: routing.yml
+    resource: ../common/routing.yml
