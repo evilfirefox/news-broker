@@ -34,7 +34,7 @@
     <target name="deploy-to-live">
         <sshexec host="${deploy.server}" username="${deploy.user}" keyfile="${deploy.keyfile}"
                  command="mkdir --parents ${deploy.target_folder}" trust="true"/>
-        <scp file="${basedir}/web-broker-live-build/artifact.caf" keyfile="${deploy.keyfile}"
+        <scp file="${basedir}/news-broker-live-build/artifact.caf" keyfile="${deploy.keyfile}"
              todir="${deploy.user}@${deploy.server}:${deploy.target_folder}" trust="true"/>
         <sshexec host="${deploy.server}" username="${deploy.user}" keyfile="${deploy.keyfile}"
                  command="unzip -q ${deploy.target_folder}/artifact.caf -d ${deploy.target_folder}" trust="true"/>
