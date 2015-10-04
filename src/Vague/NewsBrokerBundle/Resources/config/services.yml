@@ -3,12 +3,15 @@ parameters:
   nwb.input_provider.web.class: Vague\NewsBrokerBundle\InputProvider\WebInputProvider
   nwb.parser.danfoss.class: Vague\NewsBrokerBundle\Parser\DanfossParser
   nwb.parser.turck.class: Vague\NewsBrokerBundle\Parser\TurckParser
+  nwb.parser.br.class: Vague\NewsBrokerBundle\Parser\BrParser
   nwb.calls.register.input_provider: registerInputProvider
   nwb.calls.register.parser: registerParser
   nwb.url.danfoss: http://www.danfoss.com/news/
   nwb.url.turck: http://www.turck.ru/news_192.htm
+  nwb.url.br: http://www.br-automation.com/ru/kompaniia/priess-rielizy/
   nwb.keys.danfoss: danfoss
   nwb.keys.turck: turck
+  nwb.keys.br: br
 
 services:
   nwb.input_provider.web:
@@ -23,11 +26,17 @@ services:
     class: %nwb.parser.turck.class%
     arguments: []
 
+  nwb.parser.br:
+    class: %nwb.parser.br.class%
+    arguments: []
+
   nwb.service.broker:
     class: %nwb.service.broker.class%
     arguments: []
     calls:
       - [%nwb.calls.register.input_provider%, [%nwb.keys.danfoss%, %nwb.url.danfoss%, @nwb.input_provider.web]]
       - [%nwb.calls.register.input_provider%, [%nwb.keys.turck%, %nwb.url.turck%, @nwb.input_provider.web]]
+      - [%nwb.calls.register.input_provider%, [%nwb.keys.br%, %nwb.url.br%, @nwb.input_provider.web]]
       - [%nwb.calls.register.parser%, [%nwb.keys.danfoss%, @nwb.parser.danfoss]]
       - [%nwb.calls.register.parser%, [%nwb.keys.turck%, @nwb.parser.turck]]
+      - [%nwb.calls.register.parser%, [%nwb.keys.br%, @nwb.parser.br]]
