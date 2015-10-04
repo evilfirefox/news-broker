@@ -10,10 +10,8 @@ namespace Vague\NewsBrokerBundle\Parser;
 
 
 use Vague\NewsBrokerBundle\DataContainer\RssItem;
-use Vague\NewsBrokerBundle\Exception\FailedToLoadDomException;
-use Vague\NewsBrokerBundle\Interfaces\ParserInterface;
 
-class DanfossParser implements ParserInterface
+class DanfossParser extends BaseParser
 {
     const FORMAT_DATETIME = 'Y-M-d';
     const XPATH_ROWS = '//div[@class="tl-table"]/div[@class="tl-row"]';
@@ -22,19 +20,7 @@ class DanfossParser implements ParserInterface
     const XPATH_DATE_YEAR = 'div[@class="col0 date"]/div[@class="date-year"]';
     const XPATH_DATE_MONTH = 'div[@class="col0 date"]/div[@class="date-month"]';
     const XPATH_DATE_DAY = 'div[@class="col0 date"]/div[@class="date-number"]';
-    const MASK_FULL_URL = '%s%s';
-    const MASK_DATETIME = '%s-%s-%s';
     const BASE_DOMAIN = 'http://www.danfoss.com';
-    const MESSAGE_DOM_EXCEPTION = 'Invalid source provided';
-
-    /**
-     * @var \DOMDocument
-     */
-    protected $_dom;
-    /**
-     * @var \DOMXPath
-     */
-    protected $_xpath;
 
     /**
      * @param string $source
@@ -61,14 +47,5 @@ class DanfossParser implements ParserInterface
             $result[] = $item;
         }
         return $result;
-    }
-
-    protected function _initialize($source)
-    {
-        $this->_dom = new \DOMDocument();
-        if (!@$this->_dom->loadHTML($source)) {
-            throw new FailedToLoadDomException(static::MESSAGE_DOM_EXCEPTION);
-        }
-        $this->_xpath = new \DOMXPath($this->_dom);
     }
 }
