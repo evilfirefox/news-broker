@@ -1,14 +1,17 @@
 parameters:
   nwb.service.broker.class: Vague\NewsBrokerBundle\Service\NewsBrokerService
   nwb.input_provider.web.class: Vague\NewsBrokerBundle\InputProvider\WebInputProvider
+  nwb.input_provider.curl.class: Vague\NewsBrokerBundle\InputProvider\CurlInputProvider
   nwb.parser.danfoss.class: Vague\NewsBrokerBundle\Parser\DanfossParser
   nwb.parser.turck.class: Vague\NewsBrokerBundle\Parser\TurckParser
   nwb.parser.br.class: Vague\NewsBrokerBundle\Parser\BrParser
   nwb.calls.register.input_provider: registerInputProvider
   nwb.calls.register.parser: registerParser
+  nwb.calls.add.header: addHeader
+  nwb.calls.set.data: setData
   nwb.url.danfoss: http://www.danfoss.com/news/
   nwb.url.turck: http://www.turck.ru/news_192.htm
-  nwb.url.br: http://www.br-automation.com/ru/kompaniia/priess-rielizy/
+  nwb.url.br: http://www.br-automation.com/feapi
   nwb.keys.danfoss: danfoss
   nwb.keys.turck: turck
   nwb.keys.br: br
@@ -36,7 +39,25 @@ services:
     calls:
       - [%nwb.calls.register.input_provider%, [%nwb.keys.danfoss%, %nwb.url.danfoss%, @nwb.input_provider.web]]
       - [%nwb.calls.register.input_provider%, [%nwb.keys.turck%, %nwb.url.turck%, @nwb.input_provider.web]]
-      - [%nwb.calls.register.input_provider%, [%nwb.keys.br%, %nwb.url.br%, @nwb.input_provider.web]]
+      - [%nwb.calls.register.input_provider%, [%nwb.keys.br%, %nwb.url.br%, @nwb.input_provider.curl_br]]
       - [%nwb.calls.register.parser%, [%nwb.keys.danfoss%, @nwb.parser.danfoss]]
       - [%nwb.calls.register.parser%, [%nwb.keys.turck%, @nwb.parser.turck]]
       - [%nwb.calls.register.parser%, [%nwb.keys.br%, @nwb.parser.br]]
+
+  nwb.input_provider.curl_br:
+    class: %nwb.input_provider.curl.class%
+    arguments: [%nwb.url.br%]
+    calls:
+      - [%nwb.calls.add.header%, [Accept, "application/json, text/javascript, */*; q=0.01"]]
+      - [%nwb.calls.add.header%, [Accept-Encoding, "gzip, deflate"]]
+      - [%nwb.calls.add.header%, [Accept-Language, "en-GB,en;q=0.5"]]
+      - [%nwb.calls.add.header%, [Cache-Control, no-cache]]
+      - [%nwb.calls.add.header%, [Connection, keep-alive]]
+      - [%nwb.calls.add.header%, [Content-Type, "application/x-www-form-urlencoded; charset=UTF-8"]]
+      - [%nwb.calls.add.header%, [DNT, 1]]
+      - [%nwb.calls.add.header%, [Host, "www.br-automation.com"]]
+      - [%nwb.calls.add.header%, [Pragma, no-cache]]
+      - [%nwb.calls.add.header%, [Referer, "http://www.br-automation.com/ru/kompaniia/priess-rielizy/"]]
+      - [%nwb.calls.add.header%, [User-Agent, "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0"]]
+      - [%nwb.calls.add.header%, [X-Requested-With, XMLHttpRequest]]
+      - [%nwb.calls.set.data%, ["method=getTeaserList&L=19&params[type]=doc.news&params[itemsPerPage]=20&params[page]=1&params[parentPage]=56517130"]]
