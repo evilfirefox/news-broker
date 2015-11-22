@@ -60,4 +60,4 @@ services:
       - [%nwb.calls.add.header%, [Referer, "http://www.br-automation.com/ru/kompaniia/priess-rielizy/"]]
       - [%nwb.calls.add.header%, [User-Agent, "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0"]]
       - [%nwb.calls.add.header%, [X-Requested-With, XMLHttpRequest]]
-      - [%nwb.calls.set.data%, ["method=getTeaserList&L=19&params[type]=doc.news&params[itemsPerPage]=20&params[page]=1&params[parentPage]=56517130"]]
+      - [%nwb.calls.set.data%, ["method=getTeaserList&L=19&params[type]=doc.news&params[itemsPerPage]=20&params[page]=1&params[parentPage]=57073241"]]
