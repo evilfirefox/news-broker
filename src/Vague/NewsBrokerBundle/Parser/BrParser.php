@@ -54,7 +54,7 @@ class BrParser extends BaseParser
 
     protected function parseDescription($description)
     {
-        $this->_initialize($description);
+        $this->_initialize($description, true);
         return $this->_xpath->query(static::XPATH_DESCRIPTION)->item(0)->nodeValue;
     }
 
