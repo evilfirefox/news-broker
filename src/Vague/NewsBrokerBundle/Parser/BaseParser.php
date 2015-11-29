@@ -16,6 +16,7 @@ abstract class BaseParser implements ParserInterface
     const MESSAGE_DOM_EXCEPTION = 'Invalid source provided';
     const MASK_FULL_URL = '%s%s';
     const MASK_DATETIME = '%s-%s-%s';
+    const MASK_UTF8_DOC = '<html><head><meta charset="UTF-8"></head><body>%s</body><?html>';
     const ATTRIBUTE_HREF = 'href';
     /**
      * @var \DOMDocument
@@ -29,10 +30,15 @@ abstract class BaseParser implements ParserInterface
     protected function _initialize($source)
     {
         $this->_dom = new \DOMDocument();
-        if (!@$this->_dom->loadHTML($source)) {
+        if (!@$this->_dom->loadHTML($this->fixInvalidHtml($source))) {
             throw new FailedToLoadDomException(static::MESSAGE_DOM_EXCEPTION);
         }
         $this->_xpath = new \DOMXPath($this->_dom);
+    }
+
+    protected function fixInvalidHtml($source)
+    {
+        return sprintf(static::MASK_UTF8_DOC, $source);
     }
 
     /**
