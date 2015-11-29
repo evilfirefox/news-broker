@@ -16,7 +16,7 @@ abstract class BaseParser implements ParserInterface
     const MESSAGE_DOM_EXCEPTION = 'Invalid source provided';
     const MASK_FULL_URL = '%s%s';
     const MASK_DATETIME = '%s-%s-%s';
-    const MASK_UTF8_DOC = '<html><head><meta charset="UTF-8"></head><body>%s</body><?html>';
+    const MASK_UTF8_DOC = '<html><head><meta charset="UTF-8"></head><body>%s</body></html>';
     const ATTRIBUTE_HREF = 'href';
     /**
      * @var \DOMDocument
