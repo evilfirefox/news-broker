@@ -30,15 +30,17 @@ class BrParser extends BaseParser
     {
         $data = json_decode($source, true);
         $result = array();
-        foreach ($data['records'] as $record) {
-            $container = new RssItem();
-            $container->setTitle($record[static::INDEX_TITLE]);
-            $container->setEventDate(new \DateTime($record[static::INDEX_EVENT_DATE]));
-            $container->setDescription($this->parseDescription($record[static::INDEX_CONTENT]));
-            $url = $this->prepareUrl($record[static::INDEX_URI]);
-            $container->setUrl($url);
-            $container->setGUID($url);
-            $result[] = $container;
+        if (isset($data['records'])) {
+            foreach ($data['records'] as $record) {
+                $container = new RssItem();
+                $container->setTitle($record[static::INDEX_TITLE]);
+                $container->setEventDate(new \DateTime($record[static::INDEX_EVENT_DATE]));
+                $container->setDescription($this->parseDescription($record[static::INDEX_CONTENT]));
+                $url = $this->prepareUrl($record[static::INDEX_URI]);
+                $container->setUrl($url);
+                $container->setGUID($url);
+                $result[] = $container;
+            }
         }
         return $result;
     }
