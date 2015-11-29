@@ -27,10 +27,13 @@ abstract class BaseParser implements ParserInterface
      */
     protected $_xpath;
 
-    protected function _initialize($source)
+    protected function _initialize($source, $requiresFix = false)
     {
+        if ($requiresFix) {
+            $source = $this->fixInvalidHtml($source);
+        }
         $this->_dom = new \DOMDocument();
-        if (!@$this->_dom->loadHTML($this->fixInvalidHtml($source))) {
+        if (!@$this->_dom->loadHTML($source)) {
             throw new FailedToLoadDomException(static::MESSAGE_DOM_EXCEPTION);
         }
         $this->_xpath = new \DOMXPath($this->_dom);
