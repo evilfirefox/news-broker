@@ -13,6 +13,7 @@ use Vague\NewsBrokerBundle\DataContainer\RssItem;
 class BrParser extends BaseParser
 {
     const REGEX_UTF_SYMBOLS = '/\\u(\w+)/i';
+    const REGEX_FEED_ID = '/pid\=(\d+)/i';
     const REPLACEMENT = '&#$1;';
     const INDEX_CONTENT = 'bodytext';
     const INDEX_EVENT_DATE = 'date';
@@ -43,6 +44,12 @@ class BrParser extends BaseParser
             }
         }
         return $result;
+    }
+
+    public function getNewsFeedId($source)
+    {
+        preg_match(static::REGEX_FEED_ID, $source, $m);
+        return $m[1];
     }
 
     protected function parseDescription($description)
