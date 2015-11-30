@@ -6,6 +6,7 @@ parameters:
   nwb.parser.danfoss.class: Vague\NewsBrokerBundle\Parser\DanfossParser
   nwb.parser.turck.class: Vague\NewsBrokerBundle\Parser\TurckParser
   nwb.parser.br.class: Vague\NewsBrokerBundle\Parser\BrParser
+  nwb.parser.vega.class: Vague\NewsBrokerBundle\Parser\VegaParser
   nwb.calls.register.input_provider: registerInputProvider
   nwb.calls.register.parser: registerParser
   nwb.calls.add.header: addHeader
@@ -14,9 +15,11 @@ parameters:
   nwb.url.turck: http://www.turck.ru/news_192.htm
   nwb.url.br-main: http://www.br-automation.com/ru/kompaniia/priess-rielizy/
   nwb.url.br: http://www.br-automation.com/feapi
+  nwb.url.vega: "http://www.vega.com/en/home_ua/Company/News%%20und%%20Events/News"
   nwb.keys.danfoss: danfoss
   nwb.keys.turck: turck
   nwb.keys.br: br
+  nwb.keys.vega: vega
 
 services:
   nwb.input_provider.web:
@@ -35,6 +38,10 @@ services:
     class: %nwb.parser.br.class%
     arguments: []
 
+  nwb.parser.vega:
+    class: %nwb.parser.vega.class%
+    arguments: []
+
   nwb.service.broker:
     class: %nwb.service.broker.class%
     arguments: []
@@ -42,9 +49,11 @@ services:
       - [%nwb.calls.register.input_provider%, [%nwb.keys.danfoss%, %nwb.url.danfoss%, @nwb.input_provider.web]]
       - [%nwb.calls.register.input_provider%, [%nwb.keys.turck%, %nwb.url.turck%, @nwb.input_provider.web]]
       - [%nwb.calls.register.input_provider%, [%nwb.keys.br%, %nwb.url.br%, @nwb.input_provider.custom_br]]
+      - [%nwb.calls.register.input_provider%, [%nwb.keys.vega%, %nwb.url.vega%, @nwb.input_provider.web]]
       - [%nwb.calls.register.parser%, [%nwb.keys.danfoss%, @nwb.parser.danfoss]]
       - [%nwb.calls.register.parser%, [%nwb.keys.turck%, @nwb.parser.turck]]
       - [%nwb.calls.register.parser%, [%nwb.keys.br%, @nwb.parser.br]]
+      - [%nwb.calls.register.parser%, [%nwb.keys.vega%, @nwb.parser.vega]]
 
   nwb.input_provider.curl_br:
     class: %nwb.input_provider.curl.class%
